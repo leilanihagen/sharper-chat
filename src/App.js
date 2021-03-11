@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from '@material-ui/core';
+import React, { Component } from 'react';
+import Greet from './components/Greet';
+import Login from './components/Login'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      
+    }
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Login/>
+
+        {/* <Box display="flex" justifyContent="center">
+
+          <Container>
+            <h1>English Learning Tools</h1>
+
+            <h1>Conversation</h1>
+          </Container>
+
+          <Box display="flex" flexDirection="column">
+          <List>
+            <ListItem button>
+            </ListItem>
+            <ListItem button>
+            </ListItem>
+          </List>
+          </Box>
+
+        </Box> */}
+      </div>
+    );
+  }
 }
+
 
 export default App;
