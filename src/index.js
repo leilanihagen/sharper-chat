@@ -1,9 +1,19 @@
+// import { Router } from 'express';
 import React from 'react';
+import { Router, Link, Route, Switch } from 'react-router';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const app = document.getElementById('App')
+
 ReactDOM.render(
+  // <Router>
+  //   <Route path="/" exact>
+  //     <button>Login</button>
+  //   </Route>
+  // </Router>,
+  // app
   <React.StrictMode>
     <App />
   </React.StrictMode>,

@@ -1,41 +1,33 @@
 import { Container } from '@material-ui/core';
+// import { Router } from 'express';
 import React, { Component } from 'react';
-import Greet from './components/Greet';
-import Login from './components/Login'
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import Login from './pages/Login';
+import ProtectedRoute from './ProtectedRoute';
+import ChatCenter from './pages/ChatCenter';
 
 class App extends Component{
+
   constructor(props){
     super(props);
 
     this.state = {
-      
+      isAuth: false,
+      setIsAuth: false,  
     }
   }
 
   render() {
+
     return (
-      <div className="App">
-        <Login/>
+      <Router>
+        <Route path="/" exact>
+          <Login></Login>
+        </Route>
 
-        {/* <Box display="flex" justifyContent="center">
-
-          <Container>
-            <h1>English Learning Tools</h1>
-
-            <h1>Conversation</h1>
-          </Container>
-
-          <Box display="flex" flexDirection="column">
-          <List>
-            <ListItem button>
-            </ListItem>
-            <ListItem button>
-            </ListItem>
-          </List>
-          </Box>
-
-        </Box> */}
-      </div>
+         {/* Create a new ProtectedRoute for chat-center page: */}
+        <ProtectedRoute path="/chat-center" component={ChatCenter} isAuth={this.state.isAuth} />
+      </Router>
     );
   }
 }
