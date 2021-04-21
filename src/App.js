@@ -31,16 +31,16 @@ class App extends Component{
 
     return (
       <Router>
+      <ul>
+        <li><Link to='/'>Login Page</Link></li>
+        <li><Link to='/chat-center'>Chat Center Page</Link></li>
+        <li><button onClick={this.printIsAuth}>print inAuth</button></li>
+      </ul>
         <Switch>
           <Route path='/' exact>
             {/* Dont use function notation */}
             <Login changeIsAuth={this.changeIsAuth}></Login>
           </Route>
-          <ul>
-            <li><Link to="/">Login Page</Link></li>
-            <li><Link to='/chat-center'>Chat Center Page</Link></li>
-            <li><button onClick={this.printIsAuth}>print inAuth</button></li>
-          </ul>
             {/* By default render ProtectedRoute for chat-center page: */}
             <ProtectedRoute path='/chat-center' component={ChatCenter} isAuth={this.state.isAuth} changeIsAuth={this.changeIsAuth}/>
             {/* Else render login */}
