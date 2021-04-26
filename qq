@@ -1,0 +1,17 @@
+[33mcommit 43ae13f9656395767aae26cae1c2b9089eb9cb3d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Leilani Hagen <hagen.leilani@gmail.com>
+Date:   Thu Mar 11 11:48:45 2021 -0800
+
+    Login UI skeleton complete
+
+[33mcommit f0244cf436d0ea80845d437ef08e6dcd37325678[m
+Author: Leilani Hagen <hagen.leilani@gmail.com>
+Date:   Thu Mar 11 11:14:00 2021 -0800
+
+    Creating login page mockup
+
+[33mcommit 371477fc0a33e51d3827e031cd25c14c11bb62d0[m
+Author: Leilani Hagen <hagen.leilani@gmail.com>
+Date:   Sat Mar 6 10:07:55 2021 -0800
+
+    Initialize project using Create React App
