@@ -50,4 +50,11 @@ app.use((error, req, res, next) => {
     });
 });
 
-module.exports = app;
+// Test the bare minimum functionality:
+// app.use((req, res, next) => {
+//     res.status(200).json({
+//         message: "it works!",
+//     });
+// });
+
+// module.exports = app;

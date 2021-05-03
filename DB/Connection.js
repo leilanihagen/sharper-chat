@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const MongoClient = require('mongodb').MongoClient;
 
-const URI = 'mongodb+srv://leilani:y@q4b_Zxq75BnNk@sharperchatcluster.rlwe6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const URI = 'mongodb+srv://leilani:CatsM3ow@sharperchatcluster.rlwe6.mongodb.net/sharper-chat?retryWrites=true&w=majority';
+const mongoClient = new MongoClient(URI);
 
 // const client = new MongoClient(URI);
 
@@ -23,7 +25,11 @@ const connectDB = async()=>{
         useUnifiedTopology: true,
         useNewUrlParser: true
     });
+    // Unit test:
+    console.log(mongoose.connection.readyState)
    // console.log('DB conected!!!!!!!!')
 }
-
+mongoose.connection.on('connected', () => {
+    console.log('Mongoose is connected~');
+})
 module.exports = connectDB;
