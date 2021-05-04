@@ -5,92 +5,196 @@ import { withRouter } from 'react-router';
 import { IconButton } from '@material-ui/core';
 import PeopleAltRoundedIcon from '@material-ui/icons/PeopleAltRounded';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SearchField from "react-search-field";
 import { Table, TableBody, TableRow } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Button, Box } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
+import FriendSearchPopup from '../components/FriendSearchPopup';
 
 // protected
 class ChatCenter extends Component {
+
+    // state = {
+    //     friendSearchIsOpen: false,
+    // };
+    
+    // For Popover:
+    state = {
+        openFriendSearch: false,
+        setOpenFriendSearch: false,
+    }
+
+    // For Popover with helper class:
+    // state = {
+    //     popoverState: {
+    //         variant: 'popover',
+    //         popupId: 'demoPopover',
+    //     }
+    // }
+
+    toggleFriendSearchPopup = () => {
+        this.setState({
+            friendSearchIsOpen: !(this.state.friendSearchIsOpen),
+        })
+    }
+
     render() {
+
+        const { friendSearchIsOpen } = this.state // Deconstruction
+
         const listCardStyle = {
             display : 'inline-block',
             height : '50%',
             width : '50%',
         }
+        const paperStyle = {
+            padding: 2,
+            textAlign: 'left',
+        }
+        const largeRoundIcon = {
+
+            largeIcon: {
+                width: 60,
+                height: 60,
+              },
+        }
+
         return(
-            <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="flex-start"
-            >
-                    {/* Main 2 compartments: Convo nav / Eng tools + convo box */}
-                    
-                <Grid container item>
-                {/* Conversation navigator/friend manager */}
-                    <Grid container
-                    direction="column"
-                    justify="center"
-                    alignItems="flex-start">
+            <div>
+                <Grid
+                container
+                spacing={2}
+                direction="row"
+                justify="center"
+                alignItems="flex-start"
+                >
+                    {/* Main 2 compartments: [Convo nav] / [Eng tools + convo box] */}
+                        
+                    <Grid container item md>
+                    {/* Conversation navigator/friend manager */}
+                        <Grid container
+                        spacing={3}
+                        direction="column"
+                        alignItems="flex-start">
 
-                        <Grid container item diretion="row">
-                            <IconButton>
-                                <Grid container item direction="column" justify="center" alignItems="center">
-                                    <PeopleAltRoundedIcon></PeopleAltRoundedIcon>
-                                    Friends
+                            {/* <Box m={2}> */}
+                                <Grid container item diretion="row" justify="center" xs>
+                                    <IconButton>
+                                        <Grid container item direction="column" justify="center" alignItems="center">
+                                            <PeopleAltRoundedIcon></PeopleAltRoundedIcon>
+                                            Friends
+                                        </Grid>
+                                    </IconButton>
+                                    <IconButton>
+                                        <Grid container item direction="column" justify="center" alignItems="center">
+                                            <PersonAddIcon></PersonAddIcon>
+                                            Add Friend
+                                        </Grid>
+                                    </IconButton>
                                 </Grid>
-                            </IconButton>
-                            <IconButton>
-                                <Grid container item direction="column" justify="center" alignItems="center">
-                                    <PersonAddIcon></PersonAddIcon>
-                                    Add Friend
+                            {/* </Box> */}
+                        
+                    
+                            {/* <Box m={2}> */}
+                                <Grid container item direction="row" justify="center" xs>
+                                    <SearchField>
+                                            placeholder="Search..."
+                                            {/* onChange={onChange} */}
+                                            searchText="This is initial search text"
+                                            classNames="test-class"
+                                    </SearchField>
                                 </Grid>
-                            </IconButton>
+                            {/* </Box> */}
+
+                            {/* <Box m={2}> */}
+                                <Grid container item direction="row" justify="center" xs>
+                                    <TableBody>
+                                        {/* Insert based on friends and/or filtered search */}
+                                        
+                                        <Grid container spacing={2}>
+                                            Chatrooms
+                                            <Grid container item sm={1.5} direction="column" justify="flex-start">
+                                                <Paper style={paperStyle}>Melinda</Paper>
+                                                <Paper style={paperStyle}>Jack</Paper>
+                                                <Paper style={paperStyle}>Elias</Paper>
+                                                <Paper style={paperStyle}>Mine kule venner</Paper>
+                                            </Grid>
+
+                                            {/* Flex-end to righ-justify button: */}
+                                            <Grid container item direction="row" justify="flex-end">
+
+                                                {/* Popup -Dialog- version:  */}
+                                                {/* <IconButton
+                                                    onClick={this.toggleFriendSearchPopup}>
+                                                    <AddCircleIcon />
+                                                </IconButton> */}
+
+                                                {/* Popover version: */}
+                                                <IconButton
+                                                    onClick={this.toggleFriendSearchPopup}>
+                                                    <AddCircleIcon />
+                                                </IconButton>
+
+                                                {/* Popover w/ helper: */}
+                                                {/* <IconButton
+                                                    {...bindTrigger(this.popoverState)}>
+                                                    <AddCircleIcon />
+                                                </IconButton> */}
+                                            </Grid>
+
+                                        </Grid>
+                                    </TableBody>
+                                </Grid>
+                            {/* </Box> */}
                         </Grid>
-                    
-                
-                        <SearchField>
-                                placeholder="Search..."
-                                {/* onChange={onChange} */}
-                                searchText="This is initial search text"
-                                classNames="test-class"
-                        </SearchField>
-
-                        <TableBody>
-                            {/* Insert based on friends and/or filtered search */}
-
-                            <TableRow>Melinda</TableRow>
-                            <TableRow>Jack</TableRow>
-                            <TableRow>Elias</TableRow>
-                        </TableBody>
                     </Grid>
+
+                    <Grid container item md>
+                        
+                        <Button variant="contained" color="primary"> Hahahahhhhhhhhhhhhh</Button>
+                        <Button variant="contained" color="primary"> cool</Button>
+
+                        {/* <Grid container
+                        direction="column">
+
+                        
+                        </Grid> */}
+
+                        {/* English tools and Conversation column*/}
+
+                        {/* <Grid container item direction="row">
+                            {/* English tools */}
+
+                        {/* </Grid>
+                        <Grid container item direction="column"> */}
+                            {/* Conversation  */}
+
+
+                        {/* </Grid> */}
+                    </Grid>
+
+                    
                 </Grid>
 
-                <Grid container item>
-                    
-                    <Button variant="contained" color="primary"> Hahahahhhhhhhhhhhhh</Button>
-                    <Button variant="contained" color="primary"> cool</Button>
+                {/* For Dialog: */}
+                {/* <FriendSearchPopup
+                open={friendSearchIsOpen}
+                onClose={this.toggleFriendSearchPopup}>
+            
+                </FriendSearchPopup> */}
 
-                    {/* <Grid container
-                    direction="column">
+                {/* For Popover: */}
+                <FriendSearchPopup
+                open={this.openFriendSearch}
+                onClose={this.toggleFriendSearchPopup}>
+                </FriendSearchPopup>
 
-                    
-                    </Grid> */}
-
-                    {/* English tools and Conversation column*/}
-
-                    {/* <Grid container item direction="row">
-                        {/* English tools */}
-
-                    {/* </Grid>
-                    <Grid container item direction="column"> */}
-                        {/* Conversation  */}
-
-
-                    {/* </Grid> */}
-                </Grid>
-
-            </Grid>
+                {/* For Popover w/ helper */}
+                {/* <FriendSearchPopup
+                popoverState={this.popoverState}>
+                </FriendSearchPopup> */}
+            </div>
         )}
 }
 

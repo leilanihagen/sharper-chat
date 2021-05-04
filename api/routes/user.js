@@ -1,6 +1,9 @@
 const express = require('express');
 const { Mongoose } = require('mongoose');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+
+const JWT_KEY = 'secret123';
 
 //Building a "user" resource/URL/endpoint to access user data
 const User = require('../../models/user');
@@ -78,7 +81,30 @@ router.post("/login", (req, res, next) => {
             }
             // Found user
             // Now make sure the password matches:
-            // if()
+            if(user[0].password === req.body.password){
+                const authToken = jwt.sign(
+                // Public key:
+                {
+                    username: user[0].username,
+                    userId: user[0]._id
+                },
+                // Private key:
+                JWT_KEY,
+                // Options:
+                {
+                    expiresIn: "1h"
+                },
+                );
+                return res.status(200).json({
+                    message: "Auth successful."
+                });
+            }
+            else{
+                return res.status(401).json({
+                    message: "Auth failed.",
+                    token: authToken
+                });
+            }
         })
         .catch(err => {
             console.log(err);
