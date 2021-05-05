@@ -1,4 +1,4 @@
-import { CardContent, Container, Grid, Icon } from '@material-ui/core';
+import { CardContent, Container, Grid, Icon, Typography } from '@material-ui/core';
 import React from 'react';
 import { Component } from 'react';
 import { withRouter } from 'react-router';
@@ -8,9 +8,11 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SearchField from "react-search-field";
 import { Table, TableBody, TableRow } from '@material-ui/core';
-import { Button, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
 import FriendSearchPopup from '../components/FriendSearchPopup';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
 
 // protected
 class ChatCenter extends Component {
@@ -19,11 +21,27 @@ class ChatCenter extends Component {
     //     friendSearchIsOpen: false,
     // };
     
-    // For Popover:
-    state = {
-        openFriendSearch: false,
-        setOpenFriendSearch: false,
+    // RS Popover:
+    state = {      
+        name: "React",      
+        popoverOpen: false    
+    };
+
+    togglePopover = this.togglePopover.bind(this);
+
+
+    togglePopover() {    
+        this.setState({ popoverOpen: !this.state.popoverOpen })  
     }
+    // For Popover:
+    // state = {
+    //     anchorEl: null,
+    //     setAnchorEl: null,
+    // }
+    // state = {
+    //     openFriendSearch: false,
+    //     setOpenFriendSearch: false,
+    // }
 
     // For Popover with helper class:
     // state = {
@@ -33,15 +51,31 @@ class ChatCenter extends Component {
     //     }
     // }
 
-    toggleFriendSearchPopup = () => {
-        this.setState({
-            friendSearchIsOpen: !(this.state.friendSearchIsOpen),
-        })
-    }
+    // toggleFriendSearchPopup = () => {
+    //     this.setState({
+    //         friendSearchIsOpen: !(this.state.friendSearchIsOpen),
+    //     })
+    // }
+
+    // handleClick = (event) => {
+    //     this.setState({
+    //         setAnchorEl: event.currentTarget,
+    //     })
+    // };
+    
+    // handleClose = () => {
+    //     this.setState({
+    //         setAnchorEl: null,
+    //     })
+    // };
 
     render() {
 
-        const { friendSearchIsOpen } = this.state // Deconstruction
+        const { popoverOpen } = this.state;
+        // const { friendSearchIsOpen } = this.state // Deconstruction
+
+        // const open = Boolean(this.anchorEl);
+        // const id = open ? 'simple-popover' : undefined;
 
         const listCardStyle = {
             display : 'inline-block',
@@ -130,9 +164,9 @@ class ChatCenter extends Component {
                                                     <AddCircleIcon />
                                                 </IconButton> */}
 
-                                                {/* Popover version: */}
+                                                {/* RS Popover: */}
                                                 <IconButton
-                                                    onClick={this.toggleFriendSearchPopup}>
+                                                    id="mypopover">
                                                     <AddCircleIcon />
                                                 </IconButton>
 
@@ -184,11 +218,18 @@ class ChatCenter extends Component {
             
                 </FriendSearchPopup> */}
 
-                {/* For Popover: */}
-                <FriendSearchPopup
-                open={this.openFriendSearch}
-                onClose={this.toggleFriendSearchPopup}>
-                </FriendSearchPopup>
+                {/* RS Popover: */}
+                <Popover
+                placement="bottom"
+                isOpen={popoverOpen}
+                target="mypopover"
+                toggle={this.togglePopover}
+                >
+                    <PopoverHeader>This is popover title</PopoverHeader>
+                    <PopoverBody>
+                        This is simple popover content
+                    </PopoverBody>
+                </Popover>
 
                 {/* For Popover w/ helper */}
                 {/* <FriendSearchPopup

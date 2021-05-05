@@ -23,7 +23,7 @@ import { Typography } from '@material-ui/core';
 // Popover:
 export default function FriendSearchPopup(props) {
 
-    const {title, children, openPopup, toggleOpenPopup} = props;
+    const {openPopup, toggleOpenPopup} = props;
     //^
     return (
         <Popover open={openPopup} onClose={toggleOpenPopup}>
