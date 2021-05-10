@@ -30,10 +30,32 @@ class Login extends Component{
         })
         this.props.changeIsAuth(true)
       }
+
+    isPasswordValid = () => (this.state.password === this.state.passwordConfirmation);
     
     handleSubmit = (e) => {
-        console.log('submitted');
+        e.preventDefault();
+        if( !this.isPasswordValid() ){
+            this.setState({signupError: 'Passwords do not match!'});
+        }
+        console.log(this.state); // View our inputted info!
     };
+
+    userTyping = (type, e) => {
+        switch (type) {
+            case "username":
+                this.setState({username: e.target.value});
+                break;
+            case "password":
+                this.setState({password: e.target.value});
+                break;
+            case "password_confirmation":
+                this.setState({passwordConfirmation: e.target.value});
+                break;
+            default:
+                break;
+        }
+    }
 
     render(){
         const paperStyle={padding : 20, height : '70vh', width : 280, margin : '20px auto'}
@@ -47,18 +69,23 @@ class Login extends Component{
                 <Form onSubmit={(e) => this.handleSubmit(e)}>
                     <FormGroup>
                         <Label>Enter username</Label>
-                        <Input type="textarea"></Input>
+                        <Input type="textarea" onChange={(e) => this.userTyping('username', e)}></Input>
                     </FormGroup>
                     <FormGroup>
                         <Label>Enter password</Label>
-                        <Input type="textarea"></Input>
+                        <Input type="password" onChange={(e) => this.userTyping('password', e)}></Input>
+                    </FormGroup><FormGroup>
+                        <Label>Enter password again</Label>
+                        <Input type="password" onChange={(e) => this.userTyping('password_confirmation', e)}></Input>
                     </FormGroup>
-                    {/* submit below is a React type: */}
+                    {/* submit below is a React type, this fires the submit event: */}
                     <Button type="submit">Sign in</Button>
-
                     {/* Write pure JS: */}
                     {
-                        
+                        !this.isPasswordValid() ?
+                        <p style={{color: 'red'}}>{this.state.signupError}</p>
+                        :
+                        null
                     }
                     <p>Not a user yet?</p>
                     <Button>Sign up!</Button>
