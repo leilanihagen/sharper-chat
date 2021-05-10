@@ -11,27 +11,25 @@ import { Table, TableBody, TableRow } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
 import FriendSearchPopup from '../components/FriendSearchPopup';
+
+// RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
+import { Button } from "reactstrap";
 
 // protected
 class ChatCenter extends Component {
+    constructor(){
+        super();
+        this.state = {
+            // friendSearchIsOpen: false,
+            openFriendSearch: false
+        };
 
-    // state = {
-    //     friendSearchIsOpen: false,
-    // };
-    
-    // RS Popover:
-    state = {      
-        name: "React",      
-        popoverOpen: false    
+        this.toggleFriendSearchPopup.bind(this);
     };
 
-    togglePopover = this.togglePopover.bind(this);
-
-
-    togglePopover() {    
-        this.setState({ popoverOpen: !this.state.popoverOpen })  
+    toggleFriendSearchPopup = () => {    
+        this.setState({ openFriendSearch: !this.state.openFriendSearch })  
     }
     // For Popover:
     // state = {
@@ -166,7 +164,7 @@ class ChatCenter extends Component {
 
                                                 {/* RS Popover: */}
                                                 <IconButton
-                                                    id="mypopover">
+                                                    onClick={this.toggleFriendSearchPopup}>
                                                     <AddCircleIcon />
                                                 </IconButton>
 
@@ -211,25 +209,11 @@ class ChatCenter extends Component {
                     
                 </Grid>
 
-                {/* For Dialog: */}
-                {/* <FriendSearchPopup
-                open={friendSearchIsOpen}
-                onClose={this.toggleFriendSearchPopup}>
-            
-                </FriendSearchPopup> */}
-
-                {/* RS Popover: */}
-                <Popover
-                placement="bottom"
-                isOpen={popoverOpen}
-                target="mypopover"
-                toggle={this.togglePopover}
-                >
-                    <PopoverHeader>This is popover title</PopoverHeader>
-                    <PopoverBody>
-                        This is simple popover content
-                    </PopoverBody>
-                </Popover>
+                {/* For custom RS Dialog: */}
+                <FriendSearchPopup
+                openPopup={this.state.openFriendSearch} // This.state syntax(?) (https://a-carreras-c.medium.com/building-custom-modals-in-your-react-js-app-15718434527a)
+                toggleOpenClosed={this.state.toggleFriendSearchPopup}>
+                </FriendSearchPopup>
 
                 {/* For Popover w/ helper */}
                 {/* <FriendSearchPopup
