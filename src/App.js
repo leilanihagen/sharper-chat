@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import ProtectedRoute from './ProtectedRoute';
 import ChatCenter from './pages/ChatCenter';
+import SignUp from './components/SignUp';
 
 class App extends Component{
 
@@ -41,9 +42,11 @@ class App extends Component{
             {/* Dont use function notation */}
             <Login changeIsAuth={this.changeIsAuth}></Login>
           </Route>
-            {/* By default render ProtectedRoute for chat-center page: */}
-            <ProtectedRoute path='/chat-center' component={ChatCenter} isAuth={this.state.isAuth} changeIsAuth={this.changeIsAuth}/>
-            {/* Else render login */}
+          <Route path='/login' component={Login}></Route>
+          <Route path='/signup' component={SignUp}></Route>
+          {/* By default render ProtectedRoute for chat-center page: */}
+          <ProtectedRoute path='/chat-center' component={ChatCenter} isAuth={this.state.isAuth} changeIsAuth={this.changeIsAuth}/>
+          {/* Else render login */}
         </Switch>
       </Router>
     );

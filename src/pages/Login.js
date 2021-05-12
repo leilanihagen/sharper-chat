@@ -34,7 +34,7 @@ class Login extends Component{
     isPasswordValid = () => (this.state.password === this.state.passwordConfirmation);
     
     handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default page refresh
         if( !this.isPasswordValid() ){
             this.setState({signupError: 'Passwords do not match!'});
         }
@@ -69,14 +69,14 @@ class Login extends Component{
                 <Form onSubmit={(e) => this.handleSubmit(e)}>
                     <FormGroup>
                         <Label>Enter username</Label>
-                        <Input type="textarea" onChange={(e) => this.userTyping('username', e)}></Input>
+                        <Input type="textarea" _id="username" onChange={(e) => this.userTyping('username', e)}></Input>
                     </FormGroup>
                     <FormGroup>
                         <Label>Enter password</Label>
-                        <Input type="password" onChange={(e) => this.userTyping('password', e)}></Input>
+                        <Input type="password" _id="password" onChange={(e) => this.userTyping('password', e)}></Input>
                     </FormGroup><FormGroup>
                         <Label>Enter password again</Label>
-                        <Input type="password" onChange={(e) => this.userTyping('password_confirmation', e)}></Input>
+                        <Input type="password" _id="password_confirmation" onChange={(e) => this.userTyping('password_confirmation', e)}></Input>
                     </FormGroup>
                     {/* submit below is a React type, this fires the submit event: */}
                     <Button type="submit">Sign in</Button>

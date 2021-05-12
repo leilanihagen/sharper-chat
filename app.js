@@ -29,9 +29,10 @@ app.use((req, res, next) => {
 });
 
 // Create a middleware that requests will be passed through:
-app.use('chat', chatRoutes);
-app.use('chatroom', chatroomRoutes);
-app.use('user', userRoutes);
+app.use('/chat', chatRoutes);
+app.use('/chatroom', chatroomRoutes);
+app.use('/user', userRoutes);
+app.use('/signup', userRoutes);
 
 // Handle errors that have
 app.use((req, res, next) => {

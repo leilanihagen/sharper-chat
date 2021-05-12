@@ -43,11 +43,12 @@ router.post('/', (req, res, next) => {
 
 router.post('/signup', (req, res, next) => {
     // We want to create a new user!
+    console.log('\nSaving new user to the DB...')
     const user = new User({
         _id: mongoose.Types.ObjectId(),
         username: req.body.username,
         password: req.body.password,
-        motherLanguageCode: req.body.motherLanguageCode,
+        motherLanguageCode: req.body.mother_language_code,
     });
     user.save().then(result => {
         if (user.length >= 1) {
