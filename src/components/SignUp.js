@@ -1,23 +1,26 @@
 import React from 'react'
 import { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Link } from 'react-router-dom';
 import {fakeAuth} from '../fakeAuth';
+
+import { createUser } from '../UserInfoService'
 
 // RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, FormGroup, Label, Button, Input } from 'reactstrap';
 import { Card } from 'reactstrap';
 
-const axios = require('axios');
+const firebase = require('firebase');
 
 class SignUp extends Component{
     constructor(){
         super();
         this.state = {
             username: null,
+            email: null,
             password: null,
             passwordConfirmation: null,
-            motherLanguageCode: '',
+            motherLanguageCode: null,
             signupError: '',
             redirectToReferrer: false,
         };
@@ -28,24 +31,68 @@ class SignUp extends Component{
     isPasswordValid = () => (this.state.password === this.state.passwordConfirmation);
     
     handleSubmit = (e) => {
-        // e.preventDefault(); // Prevent default page refresh
-        if( !this.isPasswordValid() ){
-            this.setState({signupError: 'Passwords do not match!'});
+        e.preventDefault(); // Prevent default page refresh
+        
+        if(!this.isPasswordValid()){
+            this.setState({ signupError: 'Passwords do not match!'});
+            return;
         }
-        else{
-            axios({
-                method: 'post',
-                url: ''
-            })
-        }
-        console.log(this.state); // View our inputted info!
-    };
+
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.state.email, this.state.password)
+            .then(authRes => {
+                // Successfully created user in firebase auth module
+
+                const userObj = {
+                    email: authRes.user.email
+                };
+                firebase
+                    .firestore()
+                    .collection('users') // Target the collection
+                    .doc(this.state.email) // Name the doc
+                    .set(userObj)
+                    .then(() => {
+                        // Successfully wrote to DB
+
+                        this.props.history.push('/chat-center')
+                    }, dbErr => {
+                        // Failed to write to DB
+
+                        console.log(dbErr);
+                        this.setState({ signupError: 'Failed to add user to DB' });
+                    })
+                }, authErr => {
+                    // Failed to add user in firebase auth module:
+
+                    console.log(authErr);
+                    this.setState({ signupError: 'Failed to create new user' })
+                })
+
+        // HTTP call:
+
+        // if( !this.isPasswordValid() ){
+        //     this.setState({signupError: 'Passwords do not match!'});
+        // }
+        // else{
+        //     createUser({
+        //         username: this.state.username,
+        //         email: this.state.email,
+        //         password: this.state.password,
+        //         motherLanguageCode: this.state.motherLanguageCode,
+        //     });
+        // }
+        // console.log(this.state); // View our inputted info!
+    }
 
     userTyping = (type, e) => {
         switch (type) {
-            case "username":
-                this.setState({username: e.target.value});
-                break;
+            // case "username":
+            //     this.setState({username: e.target.value});
+            //     break;
+            case "email":
+                    this.setState({email: e.target.value});
+                    break;
             case "password":
                 this.setState({password: e.target.value});
                 break;
@@ -68,11 +115,15 @@ class SignUp extends Component{
             return(
                 <div>
                     <Card>
-                        <h2>Sign Up!</h2>
+                        <h2>Sign Up for Sharper Chat!</h2>
                         <Form onSubmit={(e) => this.handleSubmit(e)}>
-                            <FormGroup>
+                            {/* <FormGroup>
                                 <Label>Enter username</Label>
                                 <Input type="textarea" id="username" onChange={(e) => this.userTyping('username', e)}></Input>
+                            </FormGroup> */}
+                            <FormGroup>
+                                <Label>Enter email</Label>
+                                <Input type="textarea" _id="email" onChange={(e) => this.userTyping('email', e)}></Input>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Enter password</Label>
@@ -87,7 +138,7 @@ class SignUp extends Component{
                                 <Input type="textarea" id="mother_language_code" onChange={(e) => this.userTyping('mother_language_code', e)}></Input>
                             </FormGroup>
                             {/* submit below is a React type, this fires the submit event: */}
-                            <Button type="submit">Sign in</Button>
+                            <Button type="submit">Sign up!</Button>
                             {/* Write pure JS: */}
                             {
                                 !this.isPasswordValid() ?
@@ -95,8 +146,8 @@ class SignUp extends Component{
                                 :
                                 null
                             }
-                            <p>Not a user yet?</p>
-                            <Button>Sign up!</Button>
+                            <p>Already a user?</p>
+                        <Link to={'/login'}>Log in!</Link>
                         </Form>
                     </Card>
                 </div>

@@ -5,6 +5,31 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import firebase from "firebase";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC2BcW8PvAoXguJQBPImdhR0HjTohosthE",
+  authDomain: "sharper-chat-db.firebaseapp.com",
+  projectId: "sharper-chat-db",
+  storageBucket: "sharper-chat-db.appspot.com",
+  messagingSenderId: "679513931389",
+  appId: "1:679513931389:web:ed0d04c0594ccf3bdbfb14"
+};
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+const db = firebaseApp.firestore();
+export default db;
+
+// firebase.initializeApp({
+//   apiKey: "AIzaSyC2BcW8PvAoXguJQBPImdhR0HjTohosthE",
+//   authDomain: "sharper-chat-db.firebaseapp.com",
+//   projectId: "sharper-chat-db",
+//   storageBucket: "sharper-chat-db.appspot.com",
+//   messagingSenderId: "679513931389",
+//   appId: "1:679513931389:web:ed0d04c0594ccf3bdbfb14"
+// });
+
 const app = document.getElementById('App')
 
 ReactDOM.render(

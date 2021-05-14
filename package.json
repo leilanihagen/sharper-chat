@@ -15,6 +15,7 @@
     "bootstrap": "^5.0.0",
     "chat-ui-react": "^0.2.13",
     "express": "^4.17.1",
+    "firebase": "^6.0.2",
     "follow-redirects": "^1.14.1",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",

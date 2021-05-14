@@ -11,10 +11,13 @@ import { Table, TableBody, TableRow } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
 import FriendSearchPopup from '../components/FriendSearchPopup';
+import ChatList from '../components/ChatList'
 
 // RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from "reactstrap";
+
+import firebase from "firebase";
 
 // protected
 class ChatCenter extends Component {
@@ -22,7 +25,11 @@ class ChatCenter extends Component {
         super();
         this.state = {
             // friendSearchIsOpen: false,
-            openFriendSearch: false
+            openFriendSearch: false,
+            selectedChat: null,
+            newChatFormVisible: false,
+            username: null,
+            chats: [],
         };
 
         this.toggleFriendSearchPopup.bind(this);
@@ -31,6 +38,22 @@ class ChatCenter extends Component {
     toggleFriendSearchPopup = () => {    
         this.setState({ openFriendSearch: !this.state.openFriendSearch })  
     }
+
+    selectChat = (chatIndex) => {
+        console.log('Selected a chat', chatIndex);
+    }
+
+    newChatButtonClicked = () => this.setState({ newChatFormVisible: true, selectedChat: null });
+
+    // React function, called when components render:
+    componentDidMount = () => {
+        firebase.auth().onAuthStateChanged(async _usr => {
+            if(!_usr){
+                this.props.history.push('/login');
+            }
+        })
+    }
+
     // For Popover:
     // state = {
     //     anchorEl: null,
@@ -105,6 +128,7 @@ class ChatCenter extends Component {
                         
                     <Grid container item md>
                     {/* Conversation navigator/friend manager */}
+
                         <Grid container
                         spacing={3}
                         direction="column"
@@ -183,9 +207,15 @@ class ChatCenter extends Component {
                     </Grid>
 
                     <Grid container item md>
+                        {/* Chat conversations and language center area: */}
                         
-                        <Button variant="contained" color="primary"> Hahahahhhhhhhhhhhhh</Button>
-                        <Button variant="contained" color="primary"> cool</Button>
+                        <ChatList
+                        newChatButtonController={this.newChatButtonClicked}
+                        selectChatButtonController={this.selectChat}
+                        chats={this.state.chats}
+                        activeUser={this.state.username}
+                        selectedChatIndex={this.state.selectedChat}>
+                        </ChatList>
 
                         {/* <Grid container
                         direction="column">

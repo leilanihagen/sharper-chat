@@ -13,7 +13,7 @@ class App extends Component{
     super(props);
 
     this.state = {
-      isAuth: false,
+      isAuth: true,  //!!!
       setIsAuth: false,  
     }
   }
@@ -29,7 +29,6 @@ class App extends Component{
   }
 
   render() {
-
     return (
       <Router>
       <ul>

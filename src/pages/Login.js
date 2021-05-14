@@ -1,41 +1,40 @@
 // import { Avatar, Grid, Paper, TextField, Box, FormGroup, Typography } from '@material-ui/core'
 import React from 'react'
-import { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Component, } from 'react';
+import { Route, Redirect, Link } from 'react-router-dom';
 import {fakeAuth} from '../fakeAuth';
 
 // RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, FormGroup, Label, Button, Input } from 'reactstrap';
+import { Form, FormGroup, Label, Button, Input, Card } from 'reactstrap';
 
 class Login extends Component{
     constructor(){
         super();
         this.state = {
             username: null,
+            email: null,
             password: null,
-            passwordConfirmation: null,
-            signupError: '',
-            redirectToReferrer: false,
+            loginError: '',
         };
 
         // this.handleSubmit = handleSubmit.bind(this);
     }
 
-    signIn = () => {
-        fakeAuth.authenticate(() => {
-          this.setState(() => ({
-            redirectToReferrer: true
-          }))
-        })
-        this.props.changeIsAuth(true)
-      }
+    // signIn = () => {
+    //     fakeAuth.authenticate(() => {
+    //       this.setState(() => ({
+    //         redirectToReferrer: true
+    //       }))
+    //     })
+    //     this.props.changeIsAuth(true)
+    //   }
 
-    isPasswordValid = () => (this.state.password === this.state.passwordConfirmation);
+    // isPasswordValid = () => (this.state.password === this.state.passwordConfirmation);
     
     handleSubmit = (e) => {
         e.preventDefault(); // Prevent default page refresh
-        if( !this.isPasswordValid() ){
+        if( this.loginError ){
             this.setState({signupError: 'Passwords do not match!'});
         }
         console.log(this.state); // View our inputted info!
@@ -43,14 +42,14 @@ class Login extends Component{
 
     userTyping = (type, e) => {
         switch (type) {
-            case "username":
-                this.setState({username: e.target.value});
+            // case "username":
+            //     this.setState({username: e.target.value});
+            //     break;
+            case "email":
+                this.setState({email: e.target.value});
                 break;
             case "password":
                 this.setState({password: e.target.value});
-                break;
-            case "password_confirmation":
-                this.setState({passwordConfirmation: e.target.value});
                 break;
             default:
                 break;
@@ -66,30 +65,34 @@ class Login extends Component{
             }
         else{
             return(
-                <Form onSubmit={(e) => this.handleSubmit(e)}>
-                    <FormGroup>
-                        <Label>Enter username</Label>
-                        <Input type="textarea" _id="username" onChange={(e) => this.userTyping('username', e)}></Input>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label>Enter password</Label>
-                        <Input type="password" _id="password" onChange={(e) => this.userTyping('password', e)}></Input>
-                    </FormGroup><FormGroup>
-                        <Label>Enter password again</Label>
-                        <Input type="password" _id="password_confirmation" onChange={(e) => this.userTyping('password_confirmation', e)}></Input>
-                    </FormGroup>
-                    {/* submit below is a React type, this fires the submit event: */}
-                    <Button type="submit">Sign in</Button>
-                    {/* Write pure JS: */}
-                    {
-                        !this.isPasswordValid() ?
-                        <p style={{color: 'red'}}>{this.state.signupError}</p>
-                        :
-                        null
-                    }
-                    <p>Not a user yet?</p>
-                    <Button>Sign up!</Button>
-                </Form>
+                <Card>
+                    <h2>Log In to Sharper Chat</h2>
+                    <Form onSubmit={(e) => this.handleSubmit(e)}>
+                        {/* <FormGroup>
+                            <Label>Enter username</Label>
+                            <Input type="textarea" _id="username" onChange={(e) => this.userTyping('username', e)}></Input>
+                        </FormGroup> */}
+                        <FormGroup>
+                            <Label>Enter email</Label>
+                            <Input type="textarea" _id="email" onChange={(e) => this.userTyping('email', e)}></Input>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Enter password</Label>
+                            <Input type="password" _id="password" onChange={(e) => this.userTyping('password', e)}></Input>
+                        </FormGroup>
+                        {/* submit below is a React type, this fires the submit event: */}
+                        <Button type="submit">Sign in</Button>
+                        {/* Write pure JS: */}
+                        {
+                            !this.state.loginError ?
+                            <p style={{color: 'red'}}>{this.state.signupError}</p>
+                            :
+                            null
+                        }
+                        <p>Not a user yet?</p>
+                        <Link to={'/signup'}>Sign up!</Link>
+                    </Form>
+                </Card>
                 // <Grid>
                 //     <Paper elevation={10} style={paperStyle}>
                 //         <Grid align='center'>

@@ -59,14 +59,14 @@ router.post('/signup', (req, res, next) => {
         }
         else{
             console.log(result);
-            res.status(201).json({
+            return res.status(201).json({
                 message: 'Created user (POST).'
             });
         }
     })
     .catch(err => {
         console.log(err);
-        res.status(500).json({error: err});
+        return res.status(500).json({error: err});
     });
 });
 
