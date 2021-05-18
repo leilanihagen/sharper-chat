@@ -56,17 +56,20 @@ class SignUp extends Component{
                         // Successfully wrote to DB
 
                         this.props.history.push('/chat-center')
+                        // <Redirect to='/chat-center' />
                     }, dbErr => {
                         // Failed to write to DB
 
                         console.log(dbErr);
-                        this.setState({ signupError: 'Failed to add user to DB' });
+                        this.setState({ signupError: 'Failed to add user to DB. ' + dbErr});
+                        // return;
                     })
                 }, authErr => {
                     // Failed to add user in firebase auth module:
 
                     console.log(authErr);
-                    this.setState({ signupError: 'Failed to create new user' })
+                    this.setState({ signupError: 'Failed to create new user. ' + authErr })
+                    // return;
                 })
 
         // HTTP call:
@@ -141,7 +144,7 @@ class SignUp extends Component{
                             <Button type="submit">Sign up!</Button>
                             {/* Write pure JS: */}
                             {
-                                !this.isPasswordValid() ?
+                                !this.state.signupError ?
                                 <p style={{color: 'red'}}>{this.state.signupError}</p>
                                 :
                                 null

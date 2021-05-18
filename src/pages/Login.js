@@ -1,7 +1,7 @@
 // import { Avatar, Grid, Paper, TextField, Box, FormGroup, Typography } from '@material-ui/core'
 import React from 'react'
 import { Component, } from 'react';
-import { Route, Redirect, Link } from 'react-router-dom';
+import { Route, Redirect, Link, withRouter } from 'react-router-dom';
 import {fakeAuth} from '../fakeAuth';
 
 // RS:
@@ -46,6 +46,7 @@ class Login extends Component{
             .signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
                 this.props.history.push('/chat-center')
+                // <Redirect to='/chat-center' />
             }, err => {
                 this.setState({ loginError: 'Server error'});
                 console.log(err);
@@ -70,12 +71,12 @@ class Login extends Component{
 
     render(){
         const paperStyle={padding : 20, height : '70vh', width : 280, margin : '20px auto'}
-        const { redirectToReferrer } = this.state
+        // const { redirectToReferrer } = this.state
         
-        if (redirectToReferrer === true) { // When the user authenticates, this is true 
-            return <Redirect to='/' />
-            }
-        else{
+        // if (redirectToReferrer === true) { // When the user authenticates, this is true 
+        //     return <Redirect to='/' />
+        //     }
+        // else{
             return(
                 <Card>
                     <h2>Log In to Sharper Chat</h2>
@@ -123,7 +124,7 @@ class Login extends Component{
                 //     </Paper>
                 // </Grid>
             )
-        }
+        // }
 
     }
 

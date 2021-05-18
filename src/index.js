@@ -1,9 +1,12 @@
 // import { Router } from 'express';
 import React from 'react';
-import { Router, Link, Route, Switch } from 'react-router';
+import { BrowserRouter as Router, withRouter, Link, Route, Switch } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// import Login from './pages/Login';
+// import ChatCenter from './pages/ChatCenter';
+// import SignUp from './components/SignUp';
 
 import firebase from "firebase/app";
 
@@ -32,6 +35,15 @@ export default db;
 
 const app = document.getElementById('App')
 
+// const routing = (
+//   <Router>
+//     <div>
+//       <Route path='/login' component={Login}></Route>
+//       <Route path='/signup' component={SignUp}></Route>
+//     </div>
+//   </Router>
+// );
+
 ReactDOM.render(
   // <Router>
   //   <Route path="/" exact>
@@ -39,9 +51,9 @@ ReactDOM.render(
   //   </Route>
   // </Router>,
   // app
-  <React.StrictMode>
+  <Router>
     <App />
-  </React.StrictMode>,
+  </Router>,
   document.getElementById('root')
 );
 

@@ -1,7 +1,7 @@
 import { Container } from '@material-ui/core';
 // import { Router } from 'express';
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { Router, withRouter, Link, Route, Switch, History } from 'react-router-dom';
 import Login from './pages/Login';
 import ProtectedRoute from './ProtectedRoute';
 import ChatCenter from './pages/ChatCenter';
@@ -30,27 +30,30 @@ class App extends Component{
 
   render() {
     return (
-      <Router>
-      <ul>
-        <li><Link to='/'>Login Page</Link></li>
-        <li><Link to='/chat-center'>Chat Center Page</Link></li>
-        <li><button onClick={this.printIsAuth}>print inAuth</button></li>
-      </ul>
-        <Switch>
-          <Route path='/' exact>
+      <div>
+        {/* <Switch> */}
+        {/* <ul>
+          <li><Link to='/'>Login Page</Link></li>
+          <li><Link to='/chat-center'>Chat Center Page</Link></li>
+          <li><button onClick={this.printIsAuth}>print inAuth</button></li>
+        </ul> */}
+          {/* <Route path='/' exact> */}
             {/* Dont use function notation */}
-            <Login changeIsAuth={this.changeIsAuth}></Login>
-          </Route>
+            {/* <Login changeIsAuth={this.changeIsAuth}></Login>
+          </Route> */}
+          {/* <Login exact path='/' component={Login} /> */}
           <Route path='/login' component={Login}></Route>
+          {/* <Route path='/login' component={Login}></Route> */}
           <Route path='/signup' component={SignUp}></Route>
           {/* By default render ProtectedRoute for chat-center page: */}
-          <ProtectedRoute path='/chat-center' component={ChatCenter} isAuth={this.state.isAuth} changeIsAuth={this.changeIsAuth}/>
+          {/* <ProtectedRoute path='/chat-center' component={ChatCenter} isAuth={this.state.isAuth} changeIsAuth={this.changeIsAuth}/> */}
+          <Route path='/chat-center' component={ChatCenter} isAuth={this.state.isAuth} changeIsAuth={this.changeIsAuth}/>
           {/* Else render login */}
-        </Switch>
-      </Router>
+        {/* </Switch> */}
+      </div>
     );
   }
 }
 
 
-export default App;
+export default withRouter(App);

@@ -210,6 +210,7 @@ class ChatCenter extends Component {
                         {/* Chat conversations and language center area: */}
                         
                         <ChatList
+                        history={this.props.history}
                         newChatButtonController={this.newChatButtonClicked}
                         selectChatButtonController={this.selectChat}
                         chats={this.state.chats}

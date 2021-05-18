@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component, } from 'react';
-import { Avatar } from '@material-ui/core'
+import { Avatar, Divider } from '@material-ui/core'
 
 // RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,37 +18,57 @@ class ChatList extends Component {
     }
 
     render(){
-        return (
-            <div>
-                <Button
-                onClick={this.newChat}>
-                </Button>
-                <ListGroup>
-                    {
-                        this.props.chats.map((_chat, _index) => {
-                            return(
-                                <Toast
-                                onClick={() => this.selectChat(_index)}
-                                >
-                                    <ToastHeader
-                                    // split('') breaks the string down into an array 
-                                    icon={<Avatar>{_chat.users.filter(_user => _user !== this.props.userEmail)[0].split('')[0]}</Avatar>}>
-                                        {/* Display email: */}
-                                        {_chat.users.filter(_user => _user !== this.props.userEmail)[0]}
-                                    </ToastHeader>
-                                    <ToastBody>
-                                        {/* Display chat: */}
-                                        {
-                                            _chat.messages[_chat.messages.length - 1].message
-                                        }
-                                    </ToastBody>
-                                </Toast>
-                            )
-                        })
-                    }
-                </ListGroup>
-            </div>
-        )
+        if(this.props.chats.length > 0){
+            return (
+                <div>
+                    <Button
+                    onClick={this.newChat}>
+                        New Message
+                    </Button>
+                    <ListGroup>
+                        {
+                            this.props.chats.map((_chat, _index) => {
+                                return(
+                                    <div key={_index}>
+                                        <Toast
+                                        onClick={() => this.selectChat(_index)}
+                                        >
+                                            <ToastHeader
+                                            // split('') breaks the string down into an array 
+                                            icon={<Avatar>{_chat.users.filter(_user => _user !== this.props.userEmail)[0].split('')[0]}</Avatar>}>
+                                                
+                                                {/* Display email: */}
+                                                {_chat.users.filter(_user => _user !== this.props.userEmail)[0]}
+                                            </ToastHeader>
+                                            <ToastBody>
+                                                
+                                                {/* Display chat: */}
+                                                {
+                                                    _chat.messages[_chat.messages.length - 1].message
+                                                }
+                                            </ToastBody>
+                                        </Toast>
+                                        <Divider></Divider>
+                                    </div>
+                                )
+                            })
+                        }
+                    </ListGroup>
+                </div>
+            );
+        }
+        else{
+            return(
+                <div>
+                    <Button
+                    color='primary'
+                    onClick={this.newChat}>
+                        New Message
+                    </Button>
+                    <ListGroup></ListGroup>
+                </div>
+            )
+        }
     }
     
 }
