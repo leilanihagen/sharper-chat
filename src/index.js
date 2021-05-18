@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC2BcW8PvAoXguJQBPImdhR0HjTohosthE",
@@ -16,9 +16,9 @@ const firebaseConfig = {
   appId: "1:679513931389:web:ed0d04c0594ccf3bdbfb14"
 };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-const db = firebaseApp.firestore();
+const db = firebase.firestore();
 export default db;
 
 // firebase.initializeApp({

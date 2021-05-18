@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, FormGroup, Label, Button, Input } from 'reactstrap';
 import { Card } from 'reactstrap';
 
-const firebase = require('firebase');
+import firebase from "firebase/app";
 
 class SignUp extends Component{
     constructor(){

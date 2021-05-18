@@ -8,6 +8,8 @@ import {fakeAuth} from '../fakeAuth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, FormGroup, Label, Button, Input, Card } from 'reactstrap';
 
+import firebase from "firebase/app";
+
 class Login extends Component{
     constructor(){
         super();
@@ -30,14 +32,24 @@ class Login extends Component{
     //     this.props.changeIsAuth(true)
     //   }
 
-    // isPasswordValid = () => (this.state.password === this.state.passwordConfirmation);
+    isPasswordValid = () => (this.state.password === firebase.firestore().collection('users').where());
     
     handleSubmit = (e) => {
         e.preventDefault(); // Prevent default page refresh
         if( this.loginError ){
             this.setState({signupError: 'Passwords do not match!'});
+            return
         }
-        console.log(this.state); // View our inputted info!
+        
+        firebase
+            .auth()
+            .signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then(() => {
+                this.props.history.push('/chat-center')
+            }, err => {
+                this.setState({ loginError: 'Server error'});
+                console.log(err);
+            })
     };
 
     userTyping = (type, e) => {
@@ -85,7 +97,7 @@ class Login extends Component{
                         {/* Write pure JS: */}
                         {
                             !this.state.loginError ?
-                            <p style={{color: 'red'}}>{this.state.signupError}</p>
+                            <p style={{color: 'red'}}>{this.state.loginError}</p>
                             :
                             null
                         }
