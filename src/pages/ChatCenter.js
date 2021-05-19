@@ -11,7 +11,8 @@ import { Table, TableBody, TableRow } from '@material-ui/core';
 import { Box } from '@material-ui/core';
 import { Paper } from '@material-ui/core';
 import FriendSearchPopup from '../components/FriendSearchPopup';
-import ChatList from '../components/ChatList'
+import ChatList from '../components/ChatList';
+import ChatView from '../components/ChatView';
 
 // RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,10 +27,12 @@ class ChatCenter extends Component {
         this.state = {
             // friendSearchIsOpen: false,
             openFriendSearch: false,
-            selectedChat: null,
+            selectedChatIndex: null, // This is supposed to be the index of the CONVERSATION
             newChatFormVisible: false,
             userEmail: null,
-            chats: [],
+             // This is the messages array for each convo, containing the message map itself and the users array:
+            conversation: [],
+            users: [],
         };
 
         this.toggleFriendSearchPopup.bind(this);
@@ -40,10 +43,15 @@ class ChatCenter extends Component {
     }
 
     selectChat = (chatIndex) => {
-        console.log('Selected a chat', chatIndex);
+        console.log(chatIndex)
+        this.setState({
+            selectedChatIndex: chatIndex,
+        })
     }
 
-    newChatButtonClicked = () => this.setState({ newChatFormVisible: true, selectedChat: null });
+    newChatButtonClicked = () => this.setState({ newChatFormVisible: true, selectedChatIndex: null });
+
+    signOut = () => firebase.auth().signOut();
 
     // React function, called when components render:
     componentDidMount = () => {
@@ -59,10 +67,11 @@ class ChatCenter extends Component {
                     .get()
                     .then(snap => {
                         const data = snap.docs[0].data()
-                        console.log(data.messages)
+                        console.log(data)
                         this.setState({
                             userEmail: _usr.email,
-                            chats: data.messages,
+                            conversation: data.messages,
+                            users: data.users,
                         });
                     })
                     // .onSnapshot(async res => {
@@ -72,7 +81,7 @@ class ChatCenter extends Component {
                     //     // console.log(_usr.email)
                     //     await this.setState({
                     //         userEmail: _usr.email,
-                    //         chats: chats,
+                    //         conversation: chats,
                     //     });
                     //     // console.log(this.state);
                     // })
@@ -195,12 +204,18 @@ class ChatCenter extends Component {
                                         {/* Insert based on friends and/or filtered search */}
                                         
                                         <Grid container spacing={2}>
-                                            Chatrooms
+                                            <h3>Chatrooms</h3>
                                             <Grid container item sm={1.5} direction="column" justify="flex-start">
-                                                <Paper style={paperStyle}>Melinda</Paper>
-                                                <Paper style={paperStyle}>Jack</Paper>
-                                                <Paper style={paperStyle}>Elias</Paper>
-                                                <Paper style={paperStyle}>Mine kule venner</Paper>
+                                                <ChatList
+                                                history={this.props.history}
+                                                newChatButtonController={this.newChatButtonClicked}
+                                                selectChat={this.selectChat}
+                                                conversation={this.state.conversation}
+                                                users={this.state.users}
+                                                userEmail={this.state.email}
+                                                // activeUser={this.state.username}
+                                                selectedChatIndex={this.state.selectedChatIndex}>
+                                                </ChatList>
                                             </Grid>
 
                                             {/* Flex-end to righ-justify button: */}
@@ -233,18 +248,22 @@ class ChatCenter extends Component {
                     </Grid>
 
                     <Grid container item md>
-                        {/* Chat conversations and language center area: */}
+                        {/* Chat conversation and language center area: */}
                         
-                        <ChatList
-                        history={this.props.history}
-                        newChatButtonController={this.newChatButtonClicked}
-                        selectChatButtonController={this.selectChat}
-                        chats={this.state.chats}
-                        userEmail={this.state.email}
-                        // activeUser={this.state.username}
-                        selectedChatIndex={this.state.selectedChat}>
-                        </ChatList>
-
+                         {/* We only want to disable ChatView when newChatFormVisible===true */}
+                        {
+                            this.state.newChatFormVisible ?
+                            null :
+                            <ChatView
+                            activeUser={this.state.email}
+                            conversation={this.state.conversation[this.state.selectedChatIndex]}>
+                            </ChatView>
+                        }
+                        
+                        {/* {console.log("from cc", this.state.chats[this.state.selectedChatIndex])} */}
+                        <Button onClick={this.signOut}>
+                            Sign Out
+                        </Button>
                         {/* <Grid container
                         direction="column">
 

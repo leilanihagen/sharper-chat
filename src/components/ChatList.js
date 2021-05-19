@@ -14,11 +14,14 @@ class ChatList extends Component {
     }
 
     selectChat = (index) => {
-        console.log('selected chat', index);
+        this.props.selectChat(index);
     }
 
     render(){
-        if(this.props.chats.length > 0){
+        {
+            console.log(this.props.userEmail)
+        }
+        if(this.props.conversation.length > 0){
             return (
                 <div>
                     <Button
@@ -27,14 +30,16 @@ class ChatList extends Component {
                     </Button>
                     <ListGroup>
                         {
-                            this.props.chats.map((_chat, _index) => {
+                            this.props.conversation.map((_chat, _index) => {
                                 return(
                                     <div key={_index}>
                                         <Toast
                                         onClick={() => this.selectChat(_index)}
                                         >
                                             <ToastHeader
-                                            icon={<Avatar>{_chat.sender.split('')[0]}</Avatar>}>
+                                            // Get the user who is !== active user.
+                                            // TODO: group chats
+                                            icon={<Avatar>{this.props.users.filter(_user => _user !== this.props.userEmail)[0].split('')[0]}</Avatar>}>
                                                 
                                                 {/* Display email: */}
                                                 {_chat.sender}
@@ -43,7 +48,10 @@ class ChatList extends Component {
 
                                                 {/* Display chat: */}
                                                 {
-                                                    _chat.message
+                                                    _chat.message.substring(0, 30)
+                                                }
+                                                {
+                                                    console.log(_chat)
                                                 }
                                             </ToastBody>
                                         </Toast>
