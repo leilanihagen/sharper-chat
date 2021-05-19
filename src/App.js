@@ -41,7 +41,7 @@ class App extends Component{
             {/* Dont use function notation */}
             {/* <Login changeIsAuth={this.changeIsAuth}></Login>
           </Route> */}
-          {/* <Login exact path='/' component={Login} /> */}
+          {/* <Route exact path='/' component={Login} /> */}
           <Route path='/login' component={Login}></Route>
           {/* <Route path='/login' component={Login}></Route> */}
           <Route path='/signup' component={SignUp}></Route>

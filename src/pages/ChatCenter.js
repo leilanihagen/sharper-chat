@@ -28,7 +28,7 @@ class ChatCenter extends Component {
             openFriendSearch: false,
             selectedChat: null,
             newChatFormVisible: false,
-            username: null,
+            userEmail: null,
             chats: [],
         };
 
@@ -50,6 +50,32 @@ class ChatCenter extends Component {
         firebase.auth().onAuthStateChanged(async _usr => {
             if(!_usr){
                 this.props.history.push('/login');
+            }
+            else{
+                await firebase
+                    .firestore()
+                    .collection('chats')
+                    .where('users', 'array-contains', _usr.email)
+                    .get()
+                    .then(snap => {
+                        const data = snap.docs[0].data()
+                        console.log(data.messages)
+                        this.setState({
+                            userEmail: _usr.email,
+                            chats: data.messages,
+                        });
+                    })
+                    // .onSnapshot(async res => {
+                    //     // docs is an array, we're mapping
+                    //     const chats = res.docs.map(_doc => _doc.data)
+                    //     console.log(res)
+                    //     // console.log(_usr.email)
+                    //     await this.setState({
+                    //         userEmail: _usr.email,
+                    //         chats: chats,
+                    //     });
+                    //     // console.log(this.state);
+                    // })
             }
         })
     }
@@ -214,7 +240,8 @@ class ChatCenter extends Component {
                         newChatButtonController={this.newChatButtonClicked}
                         selectChatButtonController={this.selectChat}
                         chats={this.state.chats}
-                        activeUser={this.state.username}
+                        userEmail={this.state.email}
+                        // activeUser={this.state.username}
                         selectedChatIndex={this.state.selectedChat}>
                         </ChatList>
 

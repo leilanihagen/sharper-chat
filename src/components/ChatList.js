@@ -34,17 +34,16 @@ class ChatList extends Component {
                                         onClick={() => this.selectChat(_index)}
                                         >
                                             <ToastHeader
-                                            // split('') breaks the string down into an array 
-                                            icon={<Avatar>{_chat.users.filter(_user => _user !== this.props.userEmail)[0].split('')[0]}</Avatar>}>
+                                            icon={<Avatar>{_chat.sender.split('')[0]}</Avatar>}>
                                                 
                                                 {/* Display email: */}
-                                                {_chat.users.filter(_user => _user !== this.props.userEmail)[0]}
+                                                {_chat.sender}
                                             </ToastHeader>
                                             <ToastBody>
-                                                
+
                                                 {/* Display chat: */}
                                                 {
-                                                    _chat.messages[_chat.messages.length - 1].message
+                                                    _chat.message
                                                 }
                                             </ToastBody>
                                         </Toast>
