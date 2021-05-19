@@ -212,7 +212,7 @@ class ChatCenter extends Component {
                                                 selectChat={this.selectChat}
                                                 conversation={this.state.conversation}
                                                 users={this.state.users}
-                                                userEmail={this.state.email}
+                                                userEmail={this.state.userEmail}
                                                 // activeUser={this.state.username}
                                                 selectedChatIndex={this.state.selectedChatIndex}>
                                                 </ChatList>
