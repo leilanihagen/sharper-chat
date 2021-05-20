@@ -13,6 +13,7 @@ import { Paper } from '@material-ui/core';
 import FriendSearchPopup from '../components/FriendSearchPopup';
 import ChatList from '../components/ChatList';
 import ChatView from '../components/ChatView';
+import ChatTextInput from '../components/ChatTextInput';
 
 // RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -263,7 +264,7 @@ class ChatCenter extends Component {
                         </Grid>
                     </Grid>
 
-                    <Grid container item md>
+                    <Grid container item md direction="column">
                         {/* Chat conversation and language center area: */}
                         
                          {/* We only want to disable ChatView when newChatFormVisible===true */}
@@ -276,11 +277,13 @@ class ChatCenter extends Component {
                             conversation={this.state.conversations[this.state.selectedChatIndex]}>
                             </ChatView>
                         }
-                        
+                        {
+                            this.state.selectedChatIndex !== null && !this.state.newChatFormVisible ?
+                            <ChatTextInput></ChatTextInput> :
+                            null
+                        }
                         {/* {console.log("from cc", this.state.chats[this.state.selectedChatIndex])} */}
-                        <Button onClick={this.signOut}>
-                            Sign Out
-                        </Button>
+                        
                         {/* <Grid container
                         direction="column">
 
