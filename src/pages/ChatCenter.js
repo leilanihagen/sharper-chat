@@ -31,7 +31,7 @@ class ChatCenter extends Component {
             newChatFormVisible: false,
             userEmail: null,
              // This is the messages array for each convo, containing the message map itself and the users array:
-            conversation: [],
+            conversations: [],
             users: [],
         };
 
@@ -66,13 +66,29 @@ class ChatCenter extends Component {
                     .where('users', 'array-contains', _usr.email)
                     .get()
                     .then(snap => {
-                        const data = snap.docs[0].data()
-                        console.log(data)
+                        var allConversations = [];
+                        var allUsers = [];
+                        for(var i=0; i < snap.docs.length; i++){
+
+                            const convoI = snap.docs[i].data()
+                            allConversations[i] = convoI.messages;
+                            allUsers[i] = convoI.users;
+                            console.log("Convos: ", i, " ",  allConversations[i])
+                            // console.log(users[i]);
+                        }
                         this.setState({
                             userEmail: _usr.email,
-                            conversation: data.messages,
-                            users: data.users,
+                            conversations: allConversations,
+                            users: allUsers,
                         });
+                        // console.log("Convos: ", "1: ", this.state.conversations[0], " 2: ", this.state.conversations[2])
+                        // const data = snap.docs[0].data()
+                        // console.log(data)
+                        // this.setState({
+                        //     userEmail: _usr.email,
+                        //     conversations: data.messages,
+                        //     users: data.users,
+                        // });
                     })
                     // .onSnapshot(async res => {
                     //     // docs is an array, we're mapping
@@ -81,7 +97,7 @@ class ChatCenter extends Component {
                     //     // console.log(_usr.email)
                     //     await this.setState({
                     //         userEmail: _usr.email,
-                    //         conversation: chats,
+                    //         conversations: chats,
                     //     });
                     //     // console.log(this.state);
                     // })
@@ -210,7 +226,7 @@ class ChatCenter extends Component {
                                                 history={this.props.history}
                                                 newChatButtonController={this.newChatButtonClicked}
                                                 selectChat={this.selectChat}
-                                                conversation={this.state.conversation}
+                                                conversations={this.state.conversations}
                                                 users={this.state.users}
                                                 userEmail={this.state.userEmail}
                                                 // activeUser={this.state.username}
@@ -256,7 +272,8 @@ class ChatCenter extends Component {
                             null :
                             <ChatView
                             activeUser={this.state.email}
-                            conversation={this.state.conversation[this.state.selectedChatIndex]}>
+                            users={this.state.users[this.state.selectedChatIndex]}
+                            conversation={this.state.conversations[this.state.selectedChatIndex]}>
                             </ChatView>
                         }
                         

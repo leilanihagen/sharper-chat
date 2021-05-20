@@ -25,13 +25,31 @@ class ChatView extends Component {
                         {/* Toolbar: */}
 
                     </div>
-                    <main>
-                        {/* Conversation: */}
-                        {
-                            console.log(conversation)
-                        }
+                    {/* Conversation: */}
+                    {
+                        (this.props.conversation.length < 1) ?
+                        null
+                        :
+                        <Grid container direction="column">
+                            {
+                                this.props.conversation.map((_chat, _index) => {
+                                    var justify="flex-start";
+                                    if(_chat.sender === this.props.activeUser){
+                                        // Display sender's text on the right:
+                                        justify="flex-end";
+                                    }
 
-                    </main>
+                                        <Grid container item justify={justify}>
+                                            <Toast>
+                                                <ToastBody>
+                                                    <p>_chat.message</p>
+                                                </ToastBody>
+                                            </Toast>
+                                        </Grid>
+                                })
+                            }
+                        </Grid>
+                    }
                 </div>
             )
         }

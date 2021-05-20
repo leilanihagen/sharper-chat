@@ -21,7 +21,7 @@ class ChatList extends Component {
         {
             console.log(this.props.userEmail)
         }
-        if(this.props.conversation.length > 0){
+        if(this.props.conversations.length > 0){
             return (
                 <div>
                     <Button
@@ -30,28 +30,35 @@ class ChatList extends Component {
                     </Button>
                     <ListGroup>
                         {
-                            this.props.conversation.map((_chat, _index) => {
+                            this.props.conversations.map((_convo, _index) => { // this is visiting the 0 index twice
                                 return(
                                     <div key={_index}>
+                                        {/* {
+                                            console.log(this.props.userEmail)
+                                        } */}
+                                        {
+                                            console.log("OUTPUT: ", _convo)
+                                        }
                                         <Toast
                                         onClick={() => this.selectChat(_index)}
                                         >
                                             <ToastHeader
                                             // Get the user who is !== active user.
                                             // TODO: group chats
-                                            icon={<Avatar>{this.props.users.filter(_user => _user !== this.props.userEmail)[0].split('')[0]}</Avatar>}>
+                                            icon={<Avatar>{this.props.users[_index].filter(_user => _user !== this.props.userEmail)[0].split('')[0]}</Avatar>}>
                                                 
                                                 {/* Display email: */}
-                                                {_chat.sender}
+                                                {_convo.sender}
                                             </ToastHeader>
                                             <ToastBody>
 
                                                 {/* Display chat: */}
                                                 {
-                                                    _chat.message.substring(0, 30)
+                                                    // Each messages array at an _index is a convo
+                                                    _convo[0].message.substring(0, 30)
                                                 }
                                                 {
-                                                    console.log(_chat)
+                                                    console.log(_convo)
                                                 }
                                             </ToastBody>
                                         </Toast>
