@@ -7,7 +7,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'reactstrap';
 import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
+import firebase from "firebase/app";
+
 class ChatTextInput extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            chatText: '',
+        }
+    }
 
     userClickedInput = () => {
         console.log("user clicked")
@@ -15,12 +24,22 @@ class ChatTextInput extends Component {
     }
 
     userTyping = (e) => {
-        console.log("user typing")
+        this.setState({chatText: e.target.value})
     }
 
+    messageValid = (text) => text !== '';
+
     submitMessage = () => {
-        
+        if(this.messageValid(this.state.chatText)){
+            this.props.submitMessage(this.state.chatText)
+            document.getElementById("chat-text-box").value = '';
+            this.props.updateChatView();
+        }
     }
+
+    // updateChatView = () => {
+    //     this.props.updateChatView();
+    // }
 
     render(){
 
@@ -28,6 +47,7 @@ class ChatTextInput extends Component {
             <div>
                 <InputGroup>
                     <Input
+                    id="chat-text-box"
                     placeholder="Type your message here..."
                     onKeyUp={(e) => this.userTyping(e)}
                     onFocus={this.userClickedInput} />

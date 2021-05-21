@@ -34,6 +34,7 @@ class ChatCenter extends Component {
              // This is the messages array for each convo, containing the message map itself and the users array:
             conversations: [],
             users: [],
+            updateChatViewVar: null,
         };
 
         this.toggleFriendSearchPopup.bind(this);
@@ -54,6 +55,29 @@ class ChatCenter extends Component {
 
     signOut = () => firebase.auth().signOut();
 
+    updateChatView(){
+        this.setState({ updateChatViewVar: 1});
+    }
+
+    buildConvoKey = (friend) => [this.state.userEmail, friend].sort().join(':');
+
+    submitMessage = (message) => {
+        console.log("index: ", this.state.selectedChatIndex)
+        console.log("convo: ", this.state.conversations)
+        const convoKey = this.buildConvoKey(this.state.users[this.state.selectedChatIndex].filter(_user => _user !== this.state.userEmail)[0]);
+        firebase
+            .firestore()
+            .collection('chats')
+            .doc(convoKey)
+            .update({
+                messages: firebase.firestore.FieldValue.arrayUnion({
+                    sender: this.state.userEmail,
+                    message: message,
+                    timestamp: Date.now(),
+                }),
+                receiverHasRead: false,
+            });
+    }
     // React function, called when components render:
     componentDidMount = () => {
         firebase.auth().onAuthStateChanged(async _usr => {
@@ -82,65 +106,10 @@ class ChatCenter extends Component {
                             conversations: allConversations,
                             users: allUsers,
                         });
-                        // console.log("Convos: ", "1: ", this.state.conversations[0], " 2: ", this.state.conversations[2])
-                        // const data = snap.docs[0].data()
-                        // console.log(data)
-                        // this.setState({
-                        //     userEmail: _usr.email,
-                        //     conversations: data.messages,
-                        //     users: data.users,
-                        // });
                     })
-                    // .onSnapshot(async res => {
-                    //     // docs is an array, we're mapping
-                    //     const chats = res.docs.map(_doc => _doc.data)
-                    //     console.log(res)
-                    //     // console.log(_usr.email)
-                    //     await this.setState({
-                    //         userEmail: _usr.email,
-                    //         conversations: chats,
-                    //     });
-                    //     // console.log(this.state);
-                    // })
             }
         })
     }
-
-    // For Popover:
-    // state = {
-    //     anchorEl: null,
-    //     setAnchorEl: null,
-    // }
-    // state = {
-    //     openFriendSearch: false,
-    //     setOpenFriendSearch: false,
-    // }
-
-    // For Popover with helper class:
-    // state = {
-    //     popoverState: {
-    //         variant: 'popover',
-    //         popupId: 'demoPopover',
-    //     }
-    // }
-
-    // toggleFriendSearchPopup = () => {
-    //     this.setState({
-    //         friendSearchIsOpen: !(this.state.friendSearchIsOpen),
-    //     })
-    // }
-
-    // handleClick = (event) => {
-    //     this.setState({
-    //         setAnchorEl: event.currentTarget,
-    //     })
-    // };
-    
-    // handleClose = () => {
-    //     this.setState({
-    //         setAnchorEl: null,
-    //     })
-    // };
 
     render() {
 
@@ -231,7 +200,8 @@ class ChatCenter extends Component {
                                                 users={this.state.users}
                                                 userEmail={this.state.userEmail}
                                                 // activeUser={this.state.username}
-                                                selectedChatIndex={this.state.selectedChatIndex}>
+                                                selectedChatIndex={this.state.selectedChatIndex}
+                                                updateChatViewVar={this.state.updateChatViewVar}>
                                                 </ChatList>
                                             </Grid>
 
@@ -279,7 +249,10 @@ class ChatCenter extends Component {
                         }
                         {
                             this.state.selectedChatIndex !== null && !this.state.newChatFormVisible ?
-                            <ChatTextInput></ChatTextInput> :
+                            <ChatTextInput
+                            submitMessage={this.submitMessage}
+                            updateChatView={this.updateChatView}>
+                            </ChatTextInput> :
                             null
                         }
                         {/* {console.log("from cc", this.state.chats[this.state.selectedChatIndex])} */}

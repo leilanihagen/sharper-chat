@@ -5,7 +5,7 @@ import { Router, withRouter, Link, Route, Switch, History } from 'react-router-d
 import Login from './pages/Login';
 import ProtectedRoute from './ProtectedRoute';
 import ChatCenter from './pages/ChatCenter';
-import SignUp from './components/SignUp';
+import SignUp from './pages/SignUp';
 
 class App extends Component{
 

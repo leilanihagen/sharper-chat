@@ -10,6 +10,15 @@ import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
 class ChatView extends Component {
 
+    // ChatView needs to listen to ChatCenter's updateChatViewVar for changes someone, and reflect changes in it's own state.
+
+    componentDidUpdate = () => {
+        const convoContainer = document.getElementById('chatview-container');
+        if(convoContainer){
+            convoContainer.scrollTo(0, convoContainer.scrollHeight);
+        }
+    }
+
     render(){
 
         const { conversation } = this.props;
@@ -27,14 +36,13 @@ class ChatView extends Component {
                 <div>
                     <div>
                         {/* Toolbar: */}
-
                     </div>
                     {/* Conversation: */}
                     {
                         // (conversation.length < 1) ?
                         // null
                         // :
-                        <Grid container md direction="column">
+                        <Grid id='chatview-container' container direction="column">
                             {
                                 conversation.map((_chatMessage, _index) => {
                                     var justify="flex-start";
@@ -45,7 +53,7 @@ class ChatView extends Component {
                                     console.log("chatview OUT 2: ",_chatMessage.message);
 
                                         return(
-                                            <Grid container item xs justify={justify}>
+                                            <Grid key={_index} container item xs justify={justify}>
                                                 <Toast>
                                                     {/* <ToastHeader
                                                     icon={<Avatar>{_chatMessage.sender.split('')[0]}</Avatar>}>
