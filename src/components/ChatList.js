@@ -49,7 +49,7 @@ class ChatList extends Component {
                                             icon={<Avatar>{this.props.users[_index].filter(_user => _user !== this.props.userEmail)[0].split('')[0]}</Avatar>}>
                                                 
                                                 {/* Display email: */}
-                                                <p>{_convo[0].sender}</p>
+                                                <p>{this.props.users[_index].filter(_user => _user !== this.props.userEmail)[0]}</p>
                                             </ToastHeader>
                                             <ToastBody>
 

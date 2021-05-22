@@ -77,6 +77,50 @@ class ChatCenter extends Component {
                 receiverHasRead: false,
             });
     }
+
+    routeMessageToConvo = async (convoKey, message) => {
+        const usersInConvo = convoKey.split(':') // creates an array
+        var convoIndex = null;
+
+        // Find the INDEX of the target convo:
+        for(var i=0; i < this.state.users.length; i++){
+            var usersFound = 0;
+            for(var j=0; j < usersInConvo.length; j++){
+                if(this.state.users[i].includes(usersInConvo[j])){
+                    usersFound++;
+                }
+            }
+            if (usersFound === usersInConvo.length){
+                convoIndex = i;
+                console.log("CONVOINDEX: " ,convoIndex)
+                break;
+            }
+        }
+        this.setState({ newChatFormVisible: false });
+        this.selectChat(convoIndex);
+        this.submitMessage(message)
+        // const convo = this.state.users.find(_user => usersInConvo.every(_user2 => _user.includes(_user2)))
+    }
+
+    createNewConvo = async (convoData) => {
+        const convoKey = this.buildConvoKey(convoData.sendTo);
+        console.log(convoData.sender)
+        await firebase
+            .firestore()
+            .collection('chats')
+            .doc(convoKey)
+            .set({
+                receiverHasRead: false,
+                users: [convoData.sendTo, this.state.userEmail],
+                messages: [{
+                    message: convoData.message,
+                    sender: this.state.userEmail,
+                }]
+            });
+        this.setState({ newChatFormVisible: false });
+        this.selectChat(this.state.conversations.length -1); // ??
+    }
+
     // React function, called when components render:
     componentDidMount = () => {
         firebase.auth().onAuthStateChanged(async _usr => {
@@ -258,8 +302,9 @@ class ChatCenter extends Component {
                         }
                         {
                             this.state.newChatFormVisible ?
-                            <NewChat>
-
+                            <NewChat
+                            routeMessageToConvo={this.routeMessageToConvo}
+                            createNewConvo={this.createNewConvo}>
                             </NewChat> :
                             null
                         }

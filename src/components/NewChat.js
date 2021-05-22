@@ -34,8 +34,60 @@ class NewChat extends Component {
         }
     }
 
-    submitMessage = () => {
+    createConvo = () => {
+        this.props.createNewConvo({
+            sendTo: this.state.recipientEmail,
+            message: this.state.message,
+        });
+    }
 
+    routeMessageToConvo = () => this.props.routeMessageToConvo(this.buildConvoKey(), this.state.message);
+
+    submitMessage = async (e) => {
+        e.preventDefault();
+        console.log("user submitted")
+
+        // Check if user exists
+        const userExists = await this.userExists();
+
+        // Check if chatroom exists
+        if(userExists){
+            console.log("user exists")
+            const convoExists = await this.convoExists();
+            convoExists ? this.routeMessageToConvo() : this.createConvo();
+        }else{
+            console.log("user does not exists")
+        }
+    }
+
+    buildConvoKey = () => {
+        return [firebase.auth().currentUser.email, this.state.recipientEmail].sort().join(':');
+    }
+
+    userExists = async () => {
+        const usersSnapshot = await firebase
+            .firestore()
+            .collection('users')
+            .get();
+        
+        // console.log(usersSnapshot.docs.map(_doc => _doc.data())
+
+        const exists = usersSnapshot.docs
+            .map(_doc => _doc.id)
+            .includes(this.state.recipientEmail);
+        return exists;
+        // this.setState({ serverError: })
+    }
+
+    convoExists = async () => {
+        const convoKey = this.buildConvoKey();
+        const convo = await firebase
+            .firestore()
+            .collection('chats')
+            .doc(convoKey)
+            .get();
+        console.log(convo.exists);
+        return convo.exists;
     }
 
     render() {
@@ -51,7 +103,7 @@ class NewChat extends Component {
                     <Input type="textarea"
                     placeholder="Type your message here..."
                     onChange={(e) => this.userTyping('message', e)}></Input>
-                    <Button onClick={this.submitMessage}
+                    <Button onClick={(e) => this.submitMessage(e)}
                     style={{width: '100%'}}>Submit</Button>
                 </Form>
             </div>
