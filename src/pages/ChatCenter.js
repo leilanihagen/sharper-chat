@@ -132,8 +132,8 @@ class ChatCenter extends Component {
                     .firestore()
                     .collection('chats')
                     .where('users', 'array-contains', _usr.email)
-                    .get()
-                    .then(snap => {
+                    .onSnapshot(snap => {
+                        console.log("SNAP: ",snap)
                         var allConversations = [];
                         var allUsers = [];
                         for(var i=0; i < snap.docs.length; i++){
