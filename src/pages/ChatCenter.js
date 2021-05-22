@@ -14,6 +14,7 @@ import FriendSearchPopup from '../components/FriendSearchPopup';
 import ChatList from '../components/ChatList';
 import ChatView from '../components/ChatView';
 import ChatTextInput from '../components/ChatTextInput';
+import NewChat from '../components/NewChat';
 
 // RS:
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,7 +35,7 @@ class ChatCenter extends Component {
              // This is the messages array for each convo, containing the message map itself and the users array:
             conversations: [],
             users: [],
-            updateChatViewVar: null,
+            updateChatViewVar: 0,
         };
 
         this.toggleFriendSearchPopup.bind(this);
@@ -55,9 +56,7 @@ class ChatCenter extends Component {
 
     signOut = () => firebase.auth().signOut();
 
-    updateChatView(){
-        this.setState({ updateChatViewVar: 1});
-    }
+    updateChatView = () => this.setState({ updateChatViewVar: this.state.updateChatViewVar + 1});
 
     buildConvoKey = (friend) => [this.state.userEmail, friend].sort().join(':');
 
@@ -106,6 +105,7 @@ class ChatCenter extends Component {
                             conversations: allConversations,
                             users: allUsers,
                         });
+                        this.updateChatView();
                     })
             }
         })
@@ -251,8 +251,16 @@ class ChatCenter extends Component {
                             this.state.selectedChatIndex !== null && !this.state.newChatFormVisible ?
                             <ChatTextInput
                             submitMessage={this.submitMessage}
-                            updateChatView={this.updateChatView}>
+                            updateChatView={this.updateChatView}
+                            updateChatViewVar={this.updateChatViewVar}>
                             </ChatTextInput> :
+                            null
+                        }
+                        {
+                            this.state.newChatFormVisible ?
+                            <NewChat>
+
+                            </NewChat> :
                             null
                         }
                         {/* {console.log("from cc", this.state.chats[this.state.selectedChatIndex])} */}

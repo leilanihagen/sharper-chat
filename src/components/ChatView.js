@@ -19,6 +19,8 @@ class ChatView extends Component {
         }
     }
 
+    
+
     render(){
 
         const { conversation } = this.props;
@@ -33,7 +35,7 @@ class ChatView extends Component {
         }
         else{
             return(
-                <div>
+                <div id={this.props.updateChatViewVar}>
                     <div>
                         {/* Toolbar: */}
                     </div>

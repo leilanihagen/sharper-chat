@@ -10,7 +10,7 @@ import { Toast, ToastBody, ToastHeader, Spinner } from 'reactstrap';
 class ChatList extends Component {
 
     newChat = () => {
-        console.log('New chat clicked');
+        this.props.newChatButtonController();
     }
 
     selectChat = (index) => {
@@ -26,6 +26,7 @@ class ChatList extends Component {
                 <div>
                     <Button
                     onClick={this.newChat}>
+                    {/* style={{width:'100%'}}> */}
                         New Message
                     </Button>
                     <ListGroup>
